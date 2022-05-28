@@ -10,8 +10,8 @@ import {
   Text,
   ToastAndroid,
 } from "react-native";
-
-const Login = () => {
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const Login = ({ navigation }: { navigation: any }) => {
   const [email, onChangeEmail] = React.useState("");
   const [password, onChangePassword] = React.useState("");
   const onPress = async () => {
@@ -20,7 +20,8 @@ const Login = () => {
         email: email,
         password: password,
       });
-      console.log(res.data);
+      await AsyncStorage.setItem("@user", JSON.stringify(res.data));
+      navigation.navigate("Navigate");
     } catch (error: any) {
       ToastAndroid.showWithGravityAndOffset(
         error.response.data.data,
