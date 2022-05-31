@@ -12,10 +12,13 @@ export default function Welcome({ navigation }: { navigation: any }) {
   const onPress = () => {
     navigation.navigate("Login");
   };
+  const onPressSignUp = () => {
+    navigation.navigate("Navigate");
+  };
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("src/assets/welcome.jpg")}
+        source={require("src/assets/icon/welcome.jpg")}
         resizeMode="contain"
         style={styles.image}
       >
@@ -23,7 +26,7 @@ export default function Welcome({ navigation }: { navigation: any }) {
         <TouchableOpacity style={styles.button} onPress={onPress}>
           <Text>Sign in</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={onPress}>
+        <TouchableOpacity style={styles.button} onPress={onPressSignUp}>
           <Text>Sign up</Text>
         </TouchableOpacity>
       </ImageBackground>
