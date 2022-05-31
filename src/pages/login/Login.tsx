@@ -35,13 +35,13 @@ const Login = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={require("src/assets/welcome.jpg")}
+        source={require("src/assets/icon/welcome.jpg")}
         resizeMode="contain"
         style={styles.image}
       >
         <Image
           style={styles.userImage}
-          source={require("src/assets/user.png")}
+          source={require("src/assets/icon/user.png")}
         />
 
         <TextInput
