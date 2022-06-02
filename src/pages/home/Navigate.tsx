@@ -3,6 +3,7 @@ import React from "react";
 import { Image, StyleSheet } from "react-native";
 import ListProduct from "src/pages/product/List";
 import ListOrder from "src/pages/order/List";
+import ViewProfile from "src/pages/user/View";
 const Tab = createBottomTabNavigator();
 
 export default function Navigate() {
@@ -12,6 +13,18 @@ export default function Navigate() {
         headerShown: false,
       }}
     >
+      <Tab.Screen
+        name="Profile"
+        component={ViewProfile}
+        options={{
+          tabBarIcon: () => (
+            <Image
+              style={styles.iconTab}
+              source={require("src/assets/icon/profile.png")}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Product"
         component={ListProduct}
