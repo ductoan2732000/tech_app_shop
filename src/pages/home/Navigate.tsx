@@ -1,18 +1,24 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React from "react";
-import { Image, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import ListProduct from "src/pages/product/List";
 import ListOrder from "src/pages/order/List";
 import ViewProfile from "src/pages/user/View";
 const Tab = createBottomTabNavigator();
 
-export default function Navigate() {
+export default function Navigate({ navigation }: { navigation: any }) {
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      console.log("focus");
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+  const clickOption = () => {
+    console.log("option");
+  };
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
+    <Tab.Navigator>
       <Tab.Screen
         name="Profile"
         component={ViewProfile}
@@ -23,6 +29,23 @@ export default function Navigate() {
               source={require("src/assets/icon/profile.png")}
             />
           ),
+          headerRight: () => (
+            <TouchableOpacity onPress={clickOption}>
+              <Image
+                style={styles.iconOption}
+                source={require("src/assets/icon/menu_option.png")}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            if (e.type === "tabPress") {
+              navigation.setOptions({ title: "Profile" });
+            }
+            e.preventDefault();
+            navigation.navigate("Profile");
+          },
         }}
       />
       <Tab.Screen
@@ -36,6 +59,15 @@ export default function Navigate() {
             />
           ),
         }}
+        listeners={{
+          tabPress: (e) => {
+            if (e.type === "tabPress") {
+              navigation.setOptions({ title: "Product" });
+            }
+            e.preventDefault();
+            navigation.navigate("Product");
+          },
+        }}
       />
       <Tab.Screen
         name="Order Tracking"
@@ -48,6 +80,15 @@ export default function Navigate() {
             />
           ),
         }}
+        listeners={{
+          tabPress: (e) => {
+            if (e.type === "tabPress") {
+              navigation.setOptions({ title: "Order Tracking" });
+            }
+            e.preventDefault();
+            navigation.navigate("Order Tracking");
+          },
+        }}
       />
     </Tab.Navigator>
   );
@@ -56,5 +97,9 @@ const styles = StyleSheet.create({
   iconTab: {
     width: 18,
     height: 18,
+  },
+  iconOption: {
+    width: 25,
+    height: 25,
   },
 });

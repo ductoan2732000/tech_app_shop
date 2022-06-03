@@ -6,12 +6,24 @@ import Login from "src/pages/login/Login";
 import Navigate from "src/pages/home/Navigate";
 const Stack = createNativeStackNavigator();
 export default function Index() {
+  
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Navigate" component={Navigate} />
+        <Stack.Screen
+          name="Navigate"
+          options={{
+            title: "Profile",
+            
+          }}
+          component={Navigate}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

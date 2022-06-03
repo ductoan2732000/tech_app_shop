@@ -81,12 +81,6 @@ const Product = (props: propsProduct) => {
         placeholder="placeholder"
         editable={true}
       /> */}
-      {/* <TouchableOpacity onPress={clickProduct}>
-        <Image
-          style={styles.iconProduct}
-          source={require("src/assets/icon/profile.png")}
-        />
-      </TouchableOpacity> */}
     </View>
   );
 };
