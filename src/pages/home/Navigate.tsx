@@ -1,9 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import ListProduct from "src/pages/product/List";
 import ListOrder from "src/pages/order/List";
 import ViewProfile from "src/pages/user/View";
+
 const Tab = createBottomTabNavigator();
 
 export default function Navigate({ navigation }: { navigation: any }) {
@@ -14,14 +15,16 @@ export default function Navigate({ navigation }: { navigation: any }) {
 
     return unsubscribe;
   }, [navigation]);
-  const clickOption = () => {
-    console.log("option");
-  };
+  
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="Profile"
         component={ViewProfile}
+        // initialParams={{
+        //   clickOptionProfile: clickOptionProfile,
+        //   openOption: openOption,
+        // }}
         options={{
           tabBarIcon: () => (
             <Image
@@ -29,14 +32,14 @@ export default function Navigate({ navigation }: { navigation: any }) {
               source={require("src/assets/icon/profile.png")}
             />
           ),
-          headerRight: () => (
-            <TouchableOpacity onPress={clickOption}>
-              <Image
-                style={styles.iconOption}
-                source={require("src/assets/icon/menu_option.png")}
-              />
-            </TouchableOpacity>
-          ),
+          // headerRight: () => (
+          //   <TouchableOpacity onPress={clickOptionProfile}>
+          //     <Image
+          //       style={styles.iconOption}
+          //       source={require("src/assets/icon/menu_option.png")}
+          //     />
+          //   </TouchableOpacity>
+          // ),
         }}
         listeners={{
           tabPress: (e) => {
