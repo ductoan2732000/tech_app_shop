@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Text,
   ToastAndroid,
+  View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const Login = ({ navigation }: { navigation: any }) => {
@@ -20,7 +21,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         email: email,
         password: password,
       });
-      await AsyncStorage.setItem("@user", JSON.stringify(res.data));
+      await AsyncStorage.setItem("@user", JSON.stringify(res.data.data));
       navigation.navigate("Navigate");
     } catch (error: any) {
       ToastAndroid.showWithGravityAndOffset(
@@ -39,17 +40,18 @@ const Login = ({ navigation }: { navigation: any }) => {
         resizeMode="contain"
         style={styles.image}
       >
-        <Image
-          style={styles.userImage}
-          source={require("src/assets/icon/user.png")}
-        />
-
+        <View style={styles.labelInput}>
+          <Text>Email</Text>
+        </View>
         <TextInput
           style={styles.input}
           onChangeText={onChangeEmail}
           placeholder="Enter your email"
           value={email}
         />
+        <View style={styles.labelInput}>
+          <Text>Password</Text>
+        </View>
         <TextInput
           style={styles.input}
           onChangeText={onChangePassword}
@@ -73,6 +75,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  labelInput: {
+    width: "95%",
+    justifyContent: "flex-start",
+  },
   userRow: {
     position: "absolute",
   },
@@ -84,6 +90,7 @@ const styles = StyleSheet.create({
     // left: 30,
     zIndex: 1,
   },
+
   input: {
     height: 50,
     width: "95%",

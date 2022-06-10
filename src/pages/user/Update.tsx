@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 const genders = ["Male", "Female", "Other"];
-const ViewProfile = ({ navigation }: { navigation: any }) => {
+const ViewProfile = (props: any) => {
   const [user, setUser] = useState<user>({
     id: NaN,
     password: "",
@@ -26,7 +26,6 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
     user_name: "",
     main_address: "",
   } as user);
-  const [modeForm, setModeForm] = useState("view");
   useEffect(() => {
     try {
       AsyncStorage.getItem("@user").then((res: any) => {
@@ -87,7 +86,6 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
           onChangeText={(newText) => onChangeName(newText)}
           placeholder="Full name"
           value={user.full_name}
-          editable={modeForm === "view" ? false : true}
         />
         <View style={styles.labelInput}>
           <Text>Phone</Text>
@@ -97,7 +95,6 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
           onChangeText={(newText) => onChangePhone(newText)}
           placeholder="phone"
           value={user.phone}
-          editable={modeForm === "view" ? false : true}
         />
         <View style={styles.labelInput}>
           <Text>Birthday</Text>
@@ -107,7 +104,6 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
           onChangeText={(newText) => onChangeBirthday(newText)}
           placeholder="birthday"
           value={user.birthday}
-          editable={modeForm === "view" ? false : true}
         />
         <View style={styles.labelInput}>
           <Text>Gender</Text>
@@ -137,37 +133,20 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
           onChangeText={(newText) => onChangeMainAddress(newText)}
           placeholder="Main Address"
           value={user.main_address}
-          editable={modeForm === "view" ? false : true}
         />
         <View style={styles.footer}>
-          {modeForm === "view" ? (
-            <TouchableOpacity
-              disabled={false}
-              activeOpacity={1}
-              style={styles.footerButtonUpdateFormView}
-              onPress={() => setModeForm("update")}
-            >
-              <Text>Update</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              disabled={false}
-              activeOpacity={1}
-              style={styles.footerButtonUpdate}
-              onPress={() => setModeForm("view")}
-            >
-              <Text>OK</Text>
-            </TouchableOpacity>
-          )}
-          {modeForm === "update" ? (
-            <TouchableOpacity
-              style={styles.footerButtonCancel}
-              onPress={() => setModeForm("view")
-            }
-            >
-              <Text>Cancel</Text>
-            </TouchableOpacity>
-          ) : null}
+          <TouchableOpacity
+            style={styles.footerButtonUpdate}
+            onPress={() => console.log(3)}
+          >
+            <Text>Update</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.footerButtonCancel}
+            onPress={() => console.log(3)}
+          >
+            <Text>Cancel</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -222,16 +201,6 @@ const styles = StyleSheet.create({
   },
   footerButtonUpdate: {
     width: "45%",
-    height: 50,
-    backgroundColor: "green",
-    marginLeft: 10,
-    borderRadius: 10,
-    borderWidth: 0,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  footerButtonUpdateFormView: {
-    width: "95%",
     height: 50,
     backgroundColor: "green",
     marginLeft: 10,
