@@ -10,6 +10,7 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 const genders = ["Male", "Female", "Other"];
@@ -17,7 +18,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
   const [user, setUser] = useState<user>({
     id: NaN,
     password: "",
-    avatar: "",
+    avatar: "https://reactnative.dev/img/tiny_logo.png",
     full_name: "",
     phone: "",
     birthday: "",
@@ -77,6 +78,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
     <ScrollView>
       <View style={styles.areaInfo}>
         <Image style={styles.avatar} source={{ uri: user.avatar }} />
+        <ActivityIndicator size="large" color="#000" />
         <Text>Email: {user.email}</Text>
         <Text>User Name: {user.user_name}</Text>
         <View style={styles.labelInput}>
@@ -118,6 +120,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
           defaultValueByIndex={user.gender - 1}
           buttonTextStyle={styles.buttonTextStyle}
           data={genders}
+          disabled={modeForm === "view" ? true : false}
           onSelect={(selectedItem, index) => {
             console.log(selectedItem);
             onChangeGender(index + 1);
@@ -162,8 +165,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
           {modeForm === "update" ? (
             <TouchableOpacity
               style={styles.footerButtonCancel}
-              onPress={() => setModeForm("view")
-            }
+              onPress={() => setModeForm("view")}
             >
               <Text>Cancel</Text>
             </TouchableOpacity>
