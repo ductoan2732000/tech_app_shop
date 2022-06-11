@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import ListProduct from "src/pages/product/List";
 import ListOrder from "src/pages/order/List";
-import ViewProfile from "src/pages/user/View";
+import ViewProfile from "app/pages/user/UserForm";
 
 const Tab = createBottomTabNavigator();
 

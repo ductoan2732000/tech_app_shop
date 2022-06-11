@@ -12,12 +12,13 @@ import {
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { callApi } from "app/api/constant";
 const Login = ({ navigation }: { navigation: any }) => {
   const [email, onChangeEmail] = React.useState("");
   const [password, onChangePassword] = React.useState("");
   const onPress = async () => {
     try {
-      const res = await tss.post("api/login", {
+      const res = await tss.post(callApi.login, {
         email: email,
         password: password,
       });
