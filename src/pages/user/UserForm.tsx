@@ -10,9 +10,13 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
+import ImageSelect from "app/components/atoms/ImageSelect";
+import { avatarName } from "app/common/function/commonFunction";
+import tss from "app/api/tss";
+import { callApi } from "app/api/constant";
+
 const genders = ["Male", "Female", "Other"];
 const ViewProfile = ({ navigation }: { navigation: any }) => {
   const [user, setUser] = useState<user>({
@@ -28,6 +32,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
     main_address: "",
   } as user);
   const [modeForm, setModeForm] = useState("view");
+  const [key, setKey] = useState(1);
   useEffect(() => {
     try {
       AsyncStorage.getItem("@user").then((res: any) => {
@@ -43,7 +48,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
         50
       );
     }
-  }, []);
+  }, [key]);
   const onChangeName = (newVal: string) => {
     setUser({
       ...user,
@@ -74,11 +79,46 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
       main_address: newVal,
     });
   };
+  const updateUser = async () => {
+    try {
+      const res = await tss.put(callApi.user.update, user);
+      console.log(res.data);
+    } catch (error: any) {
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.data,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+    setModeForm("view");
+  };
+  const setImage = () => {
+    setKey(key + 1);
+    setUser({
+      ...user,
+      avatar: avatarName(user.id),
+    });
+  };
   return (
     <ScrollView>
       <View style={styles.areaInfo}>
-        <Image style={styles.avatar} source={{ uri: user.avatar }} />
-        <ActivityIndicator size="large" color="#000" />
+        {modeForm === "view" ? (
+          <Image
+            key={key}
+            style={styles.avatar}
+            source={{ uri: user.avatar }}
+          />
+        ) : (
+          <ImageSelect
+            avatar={avatarName(user.id)}
+            style={styles.dsdddsds}
+            userId={user.id}
+            setImageBase={setImage}
+          />
+        )}
+
         <Text>Email: {user.email}</Text>
         <Text>User Name: {user.user_name}</Text>
         <View style={styles.labelInput}>
@@ -122,7 +162,6 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
           data={genders}
           disabled={modeForm === "view" ? true : false}
           onSelect={(selectedItem, index) => {
-            console.log(selectedItem);
             onChangeGender(index + 1);
           }}
           buttonTextAfterSelection={(selectedItem) => {
@@ -157,7 +196,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
               disabled={false}
               activeOpacity={1}
               style={styles.footerButtonUpdate}
-              onPress={() => setModeForm("view")}
+              onPress={updateUser}
             >
               <Text>OK</Text>
             </TouchableOpacity>
@@ -165,7 +204,10 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
           {modeForm === "update" ? (
             <TouchableOpacity
               style={styles.footerButtonCancel}
-              onPress={() => setModeForm("view")}
+              onPress={() => {
+                setModeForm("view");
+                console.log(user);
+              }}
             >
               <Text>Cancel</Text>
             </TouchableOpacity>
@@ -182,6 +224,11 @@ const styles = StyleSheet.create({
     height: 130,
     borderWidth: 2,
     borderColor: "#BAE0BD",
+    borderRadius: 10,
+  },
+  dsdddsds: {
+    width: 130,
+    height: 130,
     borderRadius: 10,
   },
   areaInfo: {
