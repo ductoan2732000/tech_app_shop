@@ -9,4 +9,5 @@ export interface user {
   email: string;
   user_name: string;
   main_address: string;
+  id_shop: number;
 }

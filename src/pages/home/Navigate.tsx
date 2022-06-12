@@ -4,7 +4,7 @@ import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import ListProduct from "src/pages/product/List";
 import ListOrder from "src/pages/order/List";
 import ViewProfile from "app/pages/user/UserForm";
-
+import ShopForm from "src/pages/user/ShopForm";
 const Tab = createBottomTabNavigator();
 
 export default function Navigate({ navigation }: { navigation: any }) {
@@ -15,7 +15,7 @@ export default function Navigate({ navigation }: { navigation: any }) {
 
     return unsubscribe;
   }, [navigation]);
-  
+
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -48,6 +48,27 @@ export default function Navigate({ navigation }: { navigation: any }) {
             }
             e.preventDefault();
             navigation.navigate("Profile");
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Shop"
+        component={ShopForm}
+        options={{
+          tabBarIcon: () => (
+            <Image
+              style={styles.iconTab}
+              source={require("src/assets/icon/shop.png")}
+            />
+          ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            if (e.type === "tabPress") {
+              navigation.setOptions({ title: "Shop" });
+            }
+            e.preventDefault();
+            navigation.navigate("Shop");
           },
         }}
       />

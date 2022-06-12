@@ -3,7 +3,11 @@ export const callApi = {
   user: {
     update: "/api/user",
   },
+  shop: {
+    getShopById: "/api/shop/{{id_shop}}",
+    update: "/api/shop",
+  },
   product: {
-    getList: "/api/product",
+    getListById: "/api/product/shop?id_shop=1",
   },
 };

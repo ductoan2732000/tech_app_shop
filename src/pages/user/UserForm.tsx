@@ -30,6 +30,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
     email: "",
     user_name: "",
     main_address: "",
+    id_shop: NaN,
   } as user);
   const [modeForm, setModeForm] = useState("view");
   const [key, setKey] = useState(1);
@@ -78,6 +79,10 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
       ...user,
       main_address: newVal,
     });
+  };
+  const updateUserFormView = () => {
+    console.log(user.id_shop);
+    setModeForm("update");
   };
   const updateUser = async () => {
     try {
@@ -187,7 +192,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
               disabled={false}
               activeOpacity={1}
               style={styles.footerButtonUpdateFormView}
-              onPress={() => setModeForm("update")}
+              onPress={updateUserFormView}
             >
               <Text>Update</Text>
             </TouchableOpacity>
@@ -206,7 +211,6 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
               style={styles.footerButtonCancel}
               onPress={() => {
                 setModeForm("view");
-                console.log(user);
               }}
             >
               <Text>Cancel</Text>
@@ -293,6 +297,16 @@ const styles = StyleSheet.create({
     width: "45%",
     height: 50,
     backgroundColor: "red",
+    marginLeft: 10,
+    borderRadius: 10,
+    borderWidth: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  footerButtonUpdateShop: {
+    width: "45%",
+    height: 50,
+    backgroundColor: "green",
     marginLeft: 10,
     borderRadius: 10,
     borderWidth: 0,

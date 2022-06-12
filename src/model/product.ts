@@ -10,4 +10,5 @@ export interface product {
   flash_sale_time: string;
   flash_sale_percent: number;
   number_of_rate: number;
+  id_shop?: number;
 }

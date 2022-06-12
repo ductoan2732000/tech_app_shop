@@ -18,6 +18,7 @@ const Product = (props: propsProduct) => {
     flash_sale_time: props.data.flash_sale_time,
     flash_sale_percent: props.data.flash_sale_percent,
     number_of_rate: props.data.number_of_rate,
+    id_shop: props.data.id_shop ? props.data.id_shop : -1,
   });
   const clickProduct = () => {
     props.clickProduct(props);

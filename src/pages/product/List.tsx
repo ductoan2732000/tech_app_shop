@@ -15,7 +15,7 @@ const ListProduct = () => {
   const [listProduct, setListProduct] = useState<product[]>([]);
   useEffect(() => {
     try {
-      tss.get(callApi.product.getList).then((res) => {
+      tss.get(callApi.product.getListById).then((res) => {
         setListProduct(res.data.data);
       });
     } catch (error: any) {
