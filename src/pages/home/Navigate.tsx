@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
-import ListProduct from "src/pages/product/List";
+import ListProduct from "app/pages/product/ProductForm";
 import ListOrder from "src/pages/order/List";
 import ViewProfile from "app/pages/user/UserForm";
 import ShopForm from "src/pages/user/ShopForm";
