@@ -5,6 +5,13 @@ export const avatarName = (username: any) => {
     "?alt=media&token=5f3f6cd9-f0a9-4502-b0de-a88a7f867c24"
   );
 };
+export const productImage = (producId: any) => {
+  return (
+    "https://firebasestorage.googleapis.com/v0/b/techapp-ad995.appspot.com/o/image%2Fproduct" +
+    producId.toString() +
+    "?alt=media&token=5f3f6cd9-f0a9-4502-b0de-a88a7f867c24"
+  );
+};
 
 export const formatDate = (date: Date) => {
   const yyyy = date.getFullYear();
