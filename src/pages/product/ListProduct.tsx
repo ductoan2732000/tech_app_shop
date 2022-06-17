@@ -9,18 +9,23 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
+  AsyncStorage,
 } from "react-native";
 import Product from "src/components/atoms/Product";
 import tss from "src/api/tss";
 import { callApi } from "app/api/constant";
 import ImageSelect from "app/components/atoms/ImageSelect";
 import { productImage } from "app/common/function/commonFunction";
-
+import { user } from "app/model/user";
+import DateTimePicker from "@react-native-community/datetimepicker";
 const ListProduct = () => {
   const [listProduct, setListProduct] = useState<product[]>([]);
   const [modeForm, setModeForm] = useState("view");
+  const [idShop, setIdShop] = useState(-1);
+  const [key, setKey] = useState(1);
+  const [show, setShow] = useState(false);
   const [productForm, setProductForm] = useState<product>({
-    id: NaN,
+    id: -1,
     images: "https://reactnative.dev/img/tiny_logo.png",
     price: NaN,
     description: "",
@@ -28,10 +33,10 @@ const ListProduct = () => {
     number_of_likes: 0,
     rate: 0,
     stock: NaN,
-    flash_sale_time: "",
+    flash_sale_time: new Date(),
     flash_sale_percent: 0,
     number_of_rate: 0,
-    id_shop: NaN,
+    id_shop: -1,
   });
   useEffect(() => {
     try {
@@ -47,7 +52,32 @@ const ListProduct = () => {
         50
       );
     }
-  }, []);
+    try {
+      AsyncStorage.getItem("@user").then((res: any) => {
+        const data: user = JSON.parse(res);
+        setIdShop(data.id_shop);
+      });
+    } catch (error: any) {
+      ToastAndroid.showWithGravityAndOffset(
+        error.toString(),
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+  }, [key]);
+  const onChangeFlashTime = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setProductForm({
+      ...productForm,
+      flash_sale_time: selectedDate,
+    });
+  };
+  const showDatepicker = () => {
+    setShow(true);
+  };
   const clickProduct = (value: any) => {
     console.log(value);
     setModeForm("update");
@@ -55,13 +85,106 @@ const ListProduct = () => {
   const createProductFromView = () => {
     setModeForm("create");
   };
-  const createProduct = () => {
-    console.log("create");
+  const createProduct = async () => {
+    const dataCreate = {
+      ...productForm,
+      id_shop: idShop,
+    };
+    if (validate(dataCreate)) {
+      const res = await tss.post(callApi.product.createProduct, dataCreate);
+      console.log(res.data.data);
+      setModeForm("view");
+      setKey(key + 1);
+    } else {
+      ToastAndroid.showWithGravityAndOffset(
+        "Vui lòng nhập dữ liệu trên form hoàn tất",
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+    }
+  };
+  const validate = (productForm: product) => {
+    let validate = true;
+    if (!productForm.id || typeof productForm.id !== "number") {
+      console.log("productForm.id");
+      validate = false;
+    }
+    if (typeof productForm.number_of_likes !== "number") {
+      console.log("productForm.number_of_likes");
+      validate = false;
+    }
+    if (
+      !productForm.flash_sale_percent ||
+      typeof productForm.flash_sale_percent !== "number"
+    ) {
+      console.log("productForm.flash_sale_percent");
+      validate = false;
+    }
+    if (typeof productForm.number_of_rate !== "number") {
+      console.log("productForm.number_of_rate");
+      validate = false;
+    }
+    if (typeof productForm.rate !== "number") {
+      console.log("productForm.rate");
+      validate = false;
+    }
+    if (!productForm.images) {
+      console.log("productForm.images");
+      validate = false;
+    }
+    if (!productForm.description) {
+      console.log("productForm.description");
+      validate = false;
+    }
+    if (!productForm.name) {
+      console.log("productForm.name");
+      validate = false;
+    }
+    if (isNaN(productForm.price)) {
+      console.log(productForm.price);
+      validate = false;
+    }
+    if (isNaN(productForm.stock)) {
+      console.log("productForm.stock");
+      validate = false;
+    }
+    if (!productForm.id_shop || productForm.id_shop === -1) {
+      console.log("productForm.id_shop");
+      validate = false;
+    }
+    return validate;
+  };
+  const getDataForm = (productForm: product) => {
+    var bodyFormData = new FormData();
+    bodyFormData.append("id", productForm.id.toString());
+    bodyFormData.append("images", productForm.images);
+    bodyFormData.append("price", productForm.price.toString());
+    bodyFormData.append(
+      "number_of_likes",
+      productForm.number_of_likes.toString()
+    );
+    bodyFormData.append("rate", productForm.rate.toString());
+    bodyFormData.append("stock", productForm.stock.toString());
+    bodyFormData.append("description", productForm.description);
+    bodyFormData.append("name", productForm.name);
+    bodyFormData.append("flash_sale_time", "2022-06-21T13:32:50.230Z");
+    bodyFormData.append(
+      "flash_sale_percent",
+      productForm.flash_sale_percent.toString()
+    );
+    bodyFormData.append(
+      "number_of_rate",
+      productForm.number_of_rate.toString()
+    );
+    bodyFormData.append("id_shop", idShop.toString());
+    return bodyFormData;
   };
   const setImage = () => {
     setProductForm({
       ...productForm,
-      images: productImage(productForm.id),
+      images: productImage(idShop),
     });
   };
   const onChangeName = (val: string) => {
@@ -78,8 +201,8 @@ const ListProduct = () => {
   };
   const onChangeStock = (val: string) => {
     let valSet = 0;
-    if(!isNaN(parseInt(val))){
-      valSet = parseInt(val)
+    if (!isNaN(parseInt(val))) {
+      valSet = parseInt(val);
     }
     setProductForm({
       ...productForm,
@@ -101,8 +224,8 @@ const ListProduct = () => {
     if (!isNaN(parseInt(val))) {
       valSet = parseInt(val);
     }
-    if(valSet > 100){
-      valSet = 100
+    if (valSet > 100) {
+      valSet = 100;
     }
     setProductForm({
       ...productForm,
@@ -191,6 +314,27 @@ const ListProduct = () => {
                     : productForm.flash_sale_percent.toString() + "%"
                 }
               />
+              <TouchableOpacity
+                disabled={false}
+                activeOpacity={1}
+                style={styles.inputDatePicker}
+                onPress={showDatepicker}
+              >
+                <Text>
+                  Flash Sale Time Begin:{" "}
+                  {productForm.flash_sale_time.toLocaleDateString()}
+                </Text>
+              </TouchableOpacity>
+
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={productForm.flash_sale_time}
+                  mode="date"
+                  is24Hour={true}
+                  onChange={onChangeFlashTime}
+                />
+              )}
             </View>
           </ScrollView>
         )}
@@ -254,6 +398,17 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     justifyContent: "center",
     alignItems: "center",
+  },
+  inputDatePicker: {
+    height: 50,
+    width: "95%",
+    margin: 15,
+    borderWidth: 2,
+    borderColor: "#BAE0BD",
+    backgroundColor: "gray",
+    color: "white",
+    padding: 10,
+    borderRadius: 10,
   },
   footerButtonCancel: {
     width: "45%",

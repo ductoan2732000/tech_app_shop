@@ -7,7 +7,7 @@ export interface product {
   number_of_likes: number;
   rate: number;
   stock: number;
-  flash_sale_time: string;
+  flash_sale_time: Date;
   flash_sale_percent: number;
   number_of_rate: number;
   id_shop?: number;
