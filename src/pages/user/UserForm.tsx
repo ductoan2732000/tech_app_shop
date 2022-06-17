@@ -88,6 +88,7 @@ const ViewProfile = ({ navigation }: { navigation: any }) => {
     try {
       const res = await tss.put(callApi.user.update, user);
       console.log(res.data);
+      setKey(key + 1);
     } catch (error: any) {
       ToastAndroid.showWithGravityAndOffset(
         error.response.data.data,
